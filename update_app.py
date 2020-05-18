@@ -70,7 +70,14 @@ def copy_files_to_dist_dir():
         paths_to_copy_l += fsu.get_dir_content_l(path, object_type = 'all', content_type = 'abs_path', recurs_dirs = True, rel_to_path = path)
         
     print(paths_to_copy_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+    
+    # trim
+    for removal_mode, to_remove_str_or_l in uap.COPY_INTO_DIST__EXCLUDE_PATHS_LD.items():
+        paths_to_copy_l = fsu.path_l_remove(paths_to_copy_l, to_remove_str_or_l, removal_mode)
         
+        print('removal_mode, to_remove_str_or_l:  ', removal_mode, to_remove_str_or_l)#`1```````````````````````````````````````````````````````
+        print(paths_to_copy_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
         
         
         
