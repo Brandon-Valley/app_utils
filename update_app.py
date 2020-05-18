@@ -61,6 +61,7 @@ def build_cmd():
 
 
 def copy_files_to_dist_dir():
+    top_lvl_file_basename_no_ext = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH, include_ext = False)
 #     root_abs_path__abs_and_rel_paths_to_copy_ld = {}
         
     print('uap.COPY_INTO_DIST__INCLUDE_PATHS_L: ', uap.COPY_INTO_DIST__INCLUDE_PATHS_L)#`````````````````````````````````````````````````````````
@@ -84,18 +85,22 @@ def copy_files_to_dist_dir():
             
         print('done with trim !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         # copy over each file / dir without contents to avoid including a trimmed path while not loosing empty dirs
+        print('\n Copying over files...')
         for abs_path in trimmed_abs_path_l:
             rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
             print(rel_to_root_path)
             
             # build dest path
-            top_lvl_file_basename = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH)
-            top_lvl_file_basename_no_ext = fsu.replace_extension(top_lvl_file_basename, '')
-            dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_path)
-            print(dist_dest_abs_path)
             
+            rel_to_root_parent_dir_path = fsu.get_parent_dir_path_from_path(rel_to_root_path)
+            
+#             print(top_lvl_file_basename_no_ext)
+#             dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_path)
+            dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_parent_dir_path)
+            print('dist_dest_abs_path:        ', dist_dest_abs_path)
+             
             fsu.copy_objects_to_dest(abs_path, dist_dest_abs_path, copy_dir_content = False)
-        
+#         
         
         
 # 
@@ -124,7 +129,7 @@ def main():
     if uap.DELETE_PYCACHE:
         fsu.delete_if_exists('__pycache__')
         
-#     copy_files_to_dist_dir()
+    copy_files_to_dist_dir()
 
     i = input('\nPress any key to continue')
     
@@ -133,5 +138,6 @@ def main():
 
 
 if __name__ == '__main__':
-#     main()       
-    copy_files_to_dist_dir()
+    main()       
+#     fsu.delete_if_exists(uap.APP_DIR__PATH)
+#     copy_files_to_dist_dir()
