@@ -2,9 +2,6 @@
 
 import os
 
-# define everything as an abs path based on a relative path to this file so
-# this file can move in relation to update_app.py
-# NOT TESTED IF THIS GIVES PATH RELATIVE TO THIS FILE OR __main__
 def abs_path(in_path):
     return os.path.abspath(in_path)
 
@@ -28,13 +25,15 @@ COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..')]
 #                            'in_basename'      -- NOT IMPLEMENTED
 #                            'paths_equal'
 #                            'in_path'          -- NOT IMPLEMENTED
+#                            'starts_with'
+#                            'is_component_name'
 #
 #        see path_l_remove() in file_system_utils for implemented / not implemented
 #
 # if COPY_INTO_DIST__INCLUDE_PATHS_L == [], this will be ignored 
 COPY_INTO_DIST__EXCLUDE_PATHS_LD = {
-                                        'basename_equals' : ['.git', '__pycache__'],
-                                        'paths_equal'     : [abs_path(APP_DIR__REL_PATH)]
+                                        'is_component_name' : ['.git', '__pycache__'],
+                                        'starts_with'     : [abs_path(APP_DIR__REL_PATH)]
                                     }
 
 

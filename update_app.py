@@ -61,27 +61,37 @@ def build_cmd():
 
 
 def copy_files_to_dist_dir():
-    root_abs_path__abs_and_rel_paths_to_copy_ld = {}
+#     root_abs_path__abs_and_rel_paths_to_copy_ld = {}
         
     print('uap.COPY_INTO_DIST__INCLUDE_PATHS_L: ', uap.COPY_INTO_DIST__INCLUDE_PATHS_L)#`````````````````````````````````````````````````````````
         
     # build init root_abs_path__rel_paths_to_copy_ld before trimming
     for root_abs_path in uap.COPY_INTO_DIST__INCLUDE_PATHS_L:        
-        rel_path_l = fsu.get_dir_content_l(root_abs_path, object_type = 'all', content_type = 'rel_path', recurs_dirs = True, rel_to_path = root_abs_path)
-        root_abs_path__abs_and_rel_paths_to_copy_ld[root_abs_path] = rel_path_l
+        abs_path_l = fsu.get_dir_content_l(root_abs_path, object_type = 'all', content_type = 'abs_path', recurs_dirs = True, rel_to_path = root_abs_path)
+#         root_abs_path__abs_and_rel_paths_to_copy_ld[root_abs_path] = abs_path_l
+        print(abs_path_l)
         
         
-    print(root_abs_path__abs_and_rel_paths_to_copy_ld.keys(), root_abs_path__abs_and_rel_paths_to_copy_ld)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+#     print(root_abs_path__abs_and_rel_paths_to_copy_ld.keys(), root_abs_path__abs_and_rel_paths_to_copy_ld)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
     
-#     # trim
-#     for removal_mode, to_remove_str_or_l in uap.COPY_INTO_DIST__EXCLUDE_PATHS_LD.items():
-#         paths_to_copy_l = fsu.path_l_remove(paths_to_copy_l, to_remove_str_or_l, removal_mode)
-#         
-#         print('removal_mode, to_remove_str_or_l:  ', removal_mode, to_remove_str_or_l)#`1```````````````````````````````````````````````````````
-#         print(paths_to_copy_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+        # trim
+        trimmed_abs_path_l = abs_path_l
+        for removal_mode, to_remove_str_or_l in uap.COPY_INTO_DIST__EXCLUDE_PATHS_LD.items():
+            trimmed_abs_path_l = fsu.path_l_remove(trimmed_abs_path_l, to_remove_str_or_l, removal_mode)
+             
+            print('removal_mode, to_remove_str_or_l:  ', removal_mode, to_remove_str_or_l)#`1```````````````````````````````````````````````````````
+            print(trimmed_abs_path_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+            
+        print('done with trim !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        # copy over each file / dir without contents to avoid including a trimmed path while not loosing empty dirs
+        for abs_path in trimmed_abs_path_l:
+            rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
+            print(rel_to_root_path)
+        
+        
+        
 # 
 #         
-#     # copy over each file / dir without contents to avoid including a trimmed path while not loosing empty dirs
 #     for abs_path in paths_to_copy_l:
 #         
         
