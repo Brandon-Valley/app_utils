@@ -20,9 +20,9 @@ def build_cmd():
             
     if uap.ICON__PATH != None:
         icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__PATH
-        cmd +=' --icon="{}" '           .format(icon_abs_path)               
+#         cmd +=' --icon="{}" '           .format(icon_abs_path)               
         cmd +=' --icon="{}" '           .format(uap.ICON__PATH)   
-        cmd +=' --one-dir '             
+#         cmd +=' --one-dir '             
              
     return cmd
 
@@ -44,7 +44,6 @@ def copy_files_to_dist_dir():
         print('\n Copying over files...')
         for abs_path in trimmed_abs_path_l:
             rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
-            print(rel_to_root_path)
             
             # build dest path
             rel_to_root_parent_dir_path = fsu.get_parent_dir_path_from_path(rel_to_root_path)
