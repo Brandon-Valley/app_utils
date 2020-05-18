@@ -7,9 +7,9 @@ from usms.file_system_utils import file_system_utils as fsu
 import update_app_params as uap
 
 
-# uap.TOP_LEVEL_FILE__REL_PATH = 'main.py' 
-# uap.ICON__REL_PATH           = None                   # None for default python icon, must be .ico
-# uap.APP_DIR__REL_PATH        = 'app'                  # None for pwd
+# uap.TOP_LEVEL_FILE__PATH = 'main.py' 
+# uap.ICON__PATH           = None                   # None for default python icon, must be .ico
+# uap.APP_DIR__PATH        = 'app'                  # None for pwd
 #              
 # uap.DRY_RUN = False # set to True to see what cmd will be executed
 # uap.DELETE_PYCACHE = True
@@ -27,7 +27,7 @@ import update_app_params as uap
 # #
 # # if COPY_INTO_DIST__INCLUDE_PATHS_L == [], this will be ignored 
 # COPY_INTO_DIST__EXCLUDE_PATHS_LD = {'basename_equals' : ['.git', '__pycache__'],
-#                                     'paths_equal'     : [APP_DIR__REL_PATH]}
+#                                     'paths_equal'     : [APP_DIR__PATH]}
 
 
 
@@ -40,20 +40,20 @@ import update_app_params as uap
 
 def build_cmd():
     cmd = 'pyinstaller '
-    cmd +='  {} '                        .format(uap.TOP_LEVEL_FILE__REL_PATH)
+    cmd +='  {} '                        .format(uap.TOP_LEVEL_FILE__PATH)
     cmd +=' --clean '
         
     
-    if uap.APP_DIR__REL_PATH != None:    
-        cmd +='  --specpath="{}" '       .format(uap.APP_DIR__REL_PATH)
-        cmd +='  --distpath="{}//dist" ' .format(uap.APP_DIR__REL_PATH)
-        cmd +='  --workpath="{}//build" '.format(uap.APP_DIR__REL_PATH)
+    if uap.APP_DIR__PATH != None:    
+        cmd +='  --specpath="{}" '       .format(uap.APP_DIR__PATH)
+        cmd +='  --distpath="{}" '       .format(uap.DIST_DIR_PATH)
+        cmd +='  --workpath="{}" '       .format(uap.BUILD_DIR_PATH)
             
-    if uap.ICON__REL_PATH != None:
-        icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__REL_PATH
+    if uap.ICON__PATH != None:
+        icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__PATH
         cmd +=' --icon="{}" '           .format(icon_abs_path)               
-        cmd +=' --icon="{}" '           .format(uap.ICON__REL_PATH)   
-        cmd +=' --add_data img//icon.png '             
+        cmd +=' --icon="{}" '           .format(uap.ICON__PATH)   
+#         cmd +=' --add_data img//icon.png '    # was this needed?????????????????????????????????????????????????????????????????????????????????         
         cmd +=' --one-dir '             
              
     return cmd
@@ -87,6 +87,8 @@ def copy_files_to_dist_dir():
         for abs_path in trimmed_abs_path_l:
             rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
             print(rel_to_root_path)
+            
+#             dist_dest_abs_path = 
         
         
         
@@ -105,11 +107,11 @@ def main():
     
     if not uap.DRY_RUN:
         
-        if uap.APP_DIR__REL_PATH != None:
+        if uap.APP_DIR__PATH != None:
             try:
-                fsu.delete_if_exists(uap.APP_DIR__REL_PATH)
+                fsu.delete_if_exists(uap.APP_DIR__PATH)
             except OSError:
-                fsu.delete_if_exists(uap.APP_DIR__REL_PATH) 
+                fsu.delete_if_exists(uap.APP_DIR__PATH) 
             
         subprocess.call(cmd, shell = True)
         
@@ -123,5 +125,5 @@ def main():
 
 
 if __name__ == '__main__':
-#     main()       
-    copy_files_to_dist_dir()
+    main()       
+#     copy_files_to_dist_dir()

@@ -6,13 +6,13 @@ def abs_path(in_path):
     return os.path.abspath(in_path)
 
 # path to top level file relative to this file
-TOP_LEVEL_FILE__REL_PATH = abs_path('..//main.py') 
+TOP_LEVEL_FILE__PATH = abs_path('..//main.py') 
 
 # None for default python icon, must be .ico
-ICON__REL_PATH           = None             
+ICON__PATH           = None             
 
 # None for pwd      
-APP_DIR__REL_PATH        = abs_path('..//app')                  
+APP_DIR__PATH        = abs_path('..//app')                  
              
 # can be paths to dirs or individual files
 # leave list empty to not copy anything extra into the dist dir
@@ -33,7 +33,7 @@ COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..')]
 # if COPY_INTO_DIST__INCLUDE_PATHS_L == [], this will be ignored 
 COPY_INTO_DIST__EXCLUDE_PATHS_LD = {
                                         'is_component_name' : ['.git', '__pycache__'],
-                                        'starts_with'     : [abs_path(APP_DIR__REL_PATH)]
+                                        'starts_with'     : [abs_path(APP_DIR__PATH)]
                                     }
 
 
@@ -43,7 +43,8 @@ DRY_RUN = False
 # delete the PYCACHE that pyinstaller creates
 DELETE_PYCACHE = True
 
-
+DIST_DIR_PATH  = APP_DIR__PATH + '\\dist'
+BUILD_DIR_PATH = APP_DIR__PATH + '\\build'
 
 
 
