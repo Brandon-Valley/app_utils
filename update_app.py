@@ -61,11 +61,15 @@ def build_cmd():
 
 
 def copy_files_to_dist_dir():
-    # build init paths_to_copy_l before trimming
     paths_to_copy_l = []
         
-#     for path in     
-    pass
+    print('uap.COPY_INTO_DIST__INCLUDE_PATHS_L: ', uap.COPY_INTO_DIST__INCLUDE_PATHS_L)#`````````````````````````````````````````````````````````
+        
+    # build init paths_to_copy_l before trimming
+    for path in uap.COPY_INTO_DIST__INCLUDE_PATHS_L:
+        paths_to_copy_l += fsu.get_dir_content_l(path, object_type = 'all', content_type = 'abs_path', recurs_dirs = True, rel_to_path = path)
+        
+    print(paths_to_copy_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
         
         
         
@@ -98,4 +102,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()       
+#     main()       
+    copy_files_to_dist_dir()
