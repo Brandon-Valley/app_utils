@@ -1,40 +1,9 @@
 import os         
-import shutil
 import subprocess             
 
 from usms.file_system_utils import file_system_utils as fsu
 
 import update_app_params as uap
-
-
-# uap.TOP_LEVEL_FILE__PATH = 'main.py' 
-# uap.ICON__PATH           = None                   # None for default python icon, must be .ico
-# uap.APP_DIR__PATH        = 'app'                  # None for pwd
-#              
-# uap.DRY_RUN = False # set to True to see what cmd will be executed
-# uap.DELETE_PYCACHE = True
-# COPY_INTO_DIST__INCLUDE_PATHS_L = ['..'] 
-# 
-# 
-# # to exclude from any dir in COPY_INTO_DIST__INCLUDE_PATHS_L
-# #    possible remove modes:  
-# #                            'basename_equals'
-# #                            'in_basename'      -- NOT IMPLEMENTED
-# #                            'paths_equal'
-# #                            'in_path'          -- NOT IMPLEMENTED
-# #
-# #        see path_l_remove() in file_system_utils for implemented / not implemented
-# #
-# # if COPY_INTO_DIST__INCLUDE_PATHS_L == [], this will be ignored 
-# COPY_INTO_DIST__EXCLUDE_PATHS_LD = {'basename_equals' : ['.git', '__pycache__'],
-#                                     'paths_equal'     : [APP_DIR__PATH]}
-
-
-
-
-
-
-
 
 
 
@@ -53,7 +22,6 @@ def build_cmd():
         icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__PATH
         cmd +=' --icon="{}" '           .format(icon_abs_path)               
         cmd +=' --icon="{}" '           .format(uap.ICON__PATH)   
-#         cmd +=' --add_data img//icon.png '    # was this needed?????????????????????????????????????????????????????????????????????????????????         
         cmd +=' --one-dir '             
              
     return cmd
@@ -62,28 +30,16 @@ def build_cmd():
 
 def copy_files_to_dist_dir():
     top_lvl_file_basename_no_ext = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH, include_ext = False)
-#     root_abs_path__abs_and_rel_paths_to_copy_ld = {}
-        
-    print('uap.COPY_INTO_DIST__INCLUDE_PATHS_L: ', uap.COPY_INTO_DIST__INCLUDE_PATHS_L)#`````````````````````````````````````````````````````````
-        
+                
     # build init root_abs_path__rel_paths_to_copy_ld before trimming
     for root_abs_path in uap.COPY_INTO_DIST__INCLUDE_PATHS_L:        
         abs_path_l = fsu.get_dir_content_l(root_abs_path, object_type = 'all', content_type = 'abs_path', recurs_dirs = True, rel_to_path = root_abs_path)
-#         root_abs_path__abs_and_rel_paths_to_copy_ld[root_abs_path] = abs_path_l
-        print(abs_path_l)
-        
-        
-#     print(root_abs_path__abs_and_rel_paths_to_copy_ld.keys(), root_abs_path__abs_and_rel_paths_to_copy_ld)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
-    
+            
         # trim
         trimmed_abs_path_l = abs_path_l
         for removal_mode, to_remove_str_or_l in uap.COPY_INTO_DIST__EXCLUDE_PATHS_LD.items():
             trimmed_abs_path_l = fsu.path_l_remove(trimmed_abs_path_l, to_remove_str_or_l, removal_mode)
-             
-            print('removal_mode, to_remove_str_or_l:  ', removal_mode, to_remove_str_or_l)#`1```````````````````````````````````````````````````````
-            print(trimmed_abs_path_l)#``````````````````````````````````````````````````````````````````````````````````````````````````````````````
             
-        print('done with trim !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         # copy over each file / dir without contents to avoid including a trimmed path while not loosing empty dirs
         print('\n Copying over files...')
         for abs_path in trimmed_abs_path_l:
@@ -91,26 +47,12 @@ def copy_files_to_dist_dir():
             print(rel_to_root_path)
             
             # build dest path
-            
             rel_to_root_parent_dir_path = fsu.get_parent_dir_path_from_path(rel_to_root_path)
-            
-#             print(top_lvl_file_basename_no_ext)
-#             dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_path)
             dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_parent_dir_path)
-            print('dist_dest_abs_path:        ', dist_dest_abs_path)
              
             fsu.copy_objects_to_dest(abs_path, dist_dest_abs_path, copy_dir_content = False)
-#         
-        
-        
-# 
-#         
-#     for abs_path in paths_to_copy_l:
-#         
-        
-        
-        
-        
+
+
 
 def main(): 
     cmd = build_cmd()
@@ -131,7 +73,7 @@ def main():
         
     copy_files_to_dist_dir()
 
-    i = input('\nPress any key to continue')
+    i = input('\nPress Enter to continue')
     
 
 
@@ -139,5 +81,3 @@ def main():
 
 if __name__ == '__main__':
     main()       
-#     fsu.delete_if_exists(uap.APP_DIR__PATH)
-#     copy_files_to_dist_dir()
