@@ -2,31 +2,35 @@ import os
 import shutil
 import subprocess             
 
+from usms.file_system_utils import file_system_utils as fsu
 
-TOP_LEVEL_FILE__REL_PATH = 'main.py' 
-ICON__REL_PATH           = None                   # None for default python icon, must be .ico
-APP_DIR__REL_PATH        = 'app'                  # None for pwd
-             
-DRY_RUN = False # set to True to see what cmd will be executed
-DELETE_PYCACHE = True
+import update_app_params as uap
+
+
+# uap.TOP_LEVEL_FILE__REL_PATH = 'main.py' 
+# uap.ICON__REL_PATH           = None                   # None for default python icon, must be .ico
+# uap.APP_DIR__REL_PATH        = 'app'                  # None for pwd
+#              
+# uap.DRY_RUN = False # set to True to see what cmd will be executed
+# uap.DELETE_PYCACHE = True
 
 
 
 def build_cmd():
     cmd = 'pyinstaller '
-    cmd +='  {} '                      .format(TOP_LEVEL_FILE__REL_PATH)
+    cmd +='  {} '                        .format(uap.TOP_LEVEL_FILE__REL_PATH)
     cmd +=' --clean '
         
     
-    if APP_DIR__REL_PATH != None:    
-        cmd +='  --specpath="{}" '       .format(APP_DIR__REL_PATH)
-        cmd +='  --distpath="{}//dist" ' .format(APP_DIR__REL_PATH)
-        cmd +='  --workpath="{}//build" '.format(APP_DIR__REL_PATH)
+    if uap.APP_DIR__REL_PATH != None:    
+        cmd +='  --specpath="{}" '       .format(uap.APP_DIR__REL_PATH)
+        cmd +='  --distpath="{}//dist" ' .format(uap.APP_DIR__REL_PATH)
+        cmd +='  --workpath="{}//build" '.format(uap.APP_DIR__REL_PATH)
             
-    if ICON__REL_PATH != None:
-        icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + ICON__REL_PATH
+    if uap.ICON__REL_PATH != None:
+        icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__REL_PATH
         cmd +=' --icon="{}" '           .format(icon_abs_path)               
-        cmd +=' --icon="{}" '           .format(ICON__REL_PATH)   
+        cmd +=' --icon="{}" '           .format(uap.ICON__REL_PATH)   
         cmd +=' --add_data img//icon.png '             
         cmd +=' --one-dir '             
              
@@ -77,17 +81,17 @@ def main():
     cmd = build_cmd()
     print(cmd)
     
-    if not DRY_RUN:
+    if not uap.DRY_RUN:
         
-        if APP_DIR__REL_PATH != None:
+        if uap.APP_DIR__REL_PATH != None:
             try:
-                delete_if_exists(APP_DIR__REL_PATH)
+                delete_if_exists(uap.APP_DIR__REL_PATH)
             except OSError:
-                delete_if_exists(APP_DIR__REL_PATH) 
+                delete_if_exists(uap.APP_DIR__REL_PATH) 
             
         subprocess.call(cmd, shell = True)
         
-    if DELETE_PYCACHE:
+    if uap.DELETE_PYCACHE:
         delete_if_exists('__pycache__')
 
     i = input('\nPress any key to continue')
