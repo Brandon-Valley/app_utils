@@ -88,7 +88,13 @@ def copy_files_to_dist_dir():
             rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
             print(rel_to_root_path)
             
-#             dist_dest_abs_path = 
+            # build dest path
+            top_lvl_file_basename = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH)
+            top_lvl_file_basename_no_ext = fsu.replace_extension(top_lvl_file_basename, '')
+            dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_path)
+            print(dist_dest_abs_path)
+            
+            fsu.copy_objects_to_dest(abs_path, dist_dest_abs_path, copy_dir_content = False)
         
         
         
@@ -117,6 +123,8 @@ def main():
         
     if uap.DELETE_PYCACHE:
         fsu.delete_if_exists('__pycache__')
+        
+#     copy_files_to_dist_dir()
 
     i = input('\nPress any key to continue')
     
@@ -125,5 +133,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()       
-#     copy_files_to_dist_dir()
+#     main()       
+    copy_files_to_dist_dir()
