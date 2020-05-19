@@ -13,7 +13,6 @@ TOP_LVL_FILE_BASENAME_NO_EXT = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PA
 
 
 
-
 def build_cmd():
     cmd = 'pyinstaller '
     cmd +='  {} '                        .format(uap.TOP_LEVEL_FILE__PATH)
@@ -107,12 +106,9 @@ def main():
               
         # copy src files into dist to allow for relative paths to non-binary files (like images), also for record keeping
         copy_files_to_dist_dir()      
-#         
+
         # create shortcut
         create_app_shortcut()
-        
-    
-    
 
     input('\nPress Enter to continue')
     

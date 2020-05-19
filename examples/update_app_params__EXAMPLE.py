@@ -5,11 +5,17 @@ import os
 def abs_path(in_path):
     return os.path.abspath(in_path)
 
+
+
+#################################################
+# App Params
+#################################################
+
 # path to top level file relative to this file
 TOP_LEVEL_FILE__PATH = abs_path('..//main.py') 
 
 # None for default python icon, must be .ico
-ICON__PATH           = None             
+ICON__PATH           = abs_path('..//imgs//icon.ico')             
 
 # None for pwd      
 APP_DIR__PATH        = abs_path('..//app')                  
@@ -37,6 +43,23 @@ COPY_INTO_DIST__EXCLUDE_PATHS_LD = {
                                     }
 
 
+#################################################
+# Shortcut Params
+#################################################
+
+ADD_SHORTCUT = True
+
+# must end in .lnk but will not show
+# can contain spaces
+SHORTCUT_DEST_PATH = abs_path('..//Setup New Repository GUI.lnk')
+
+SHORTCUT_WORKING_DIR_PATH = None
+
+
+#################################################
+#  Probably Shouldn't Change
+#################################################
+
 # set to True to see what cmd will be executed
 DRY_RUN = False 
 
@@ -45,6 +68,7 @@ DELETE_PYCACHE = True
 
 DIST_DIR_PATH  = APP_DIR__PATH + '\\dist'
 BUILD_DIR_PATH = APP_DIR__PATH + '\\build'
+
 
 
 
