@@ -1,11 +1,16 @@
-import os         
+# import os         
 import subprocess 
-import winshell
+# import winshell
 from win32com.client import Dispatch            
 
 from usms.file_system_utils import file_system_utils as fsu
 
 import update_app_params as uap
+
+
+
+TOP_LVL_FILE_BASENAME_NO_EXT = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH, include_ext = False)
+
 
 
 
@@ -28,7 +33,6 @@ def build_cmd():
 
 
 def copy_files_to_dist_dir():
-    top_lvl_file_basename_no_ext = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH, include_ext = False)
                 
     # build init root_abs_path__rel_paths_to_copy_ld before trimming
     for root_abs_path in uap.COPY_INTO_DIST__INCLUDE_PATHS_L:        
@@ -46,37 +50,38 @@ def copy_files_to_dist_dir():
             
             # build dest path
             rel_to_root_parent_dir_path = fsu.get_parent_dir_path_from_path(rel_to_root_path)
-            dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_parent_dir_path)
+            dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, TOP_LVL_FILE_BASENAME_NO_EXT, rel_to_root_parent_dir_path)
              
             fsu.copy_objects_to_dest(abs_path, dist_dest_abs_path, copy_dir_content = False)
             
             
             
-def create_shortcut(dest_path, target_path, working_dir_path = None, icon_path = None):
-
-    desktop = winshell.desktop()
-    shell = Dispatch('WScript.Shell')
-    
-    shortcut = shell.CreateShortCut(dest_path)
-    shortcut.Targetpath = target_path
-    
-    if working_dir_path != None:
-        shortcut.WorkingDirectory = working_dir_path
+def create_app_shortcut():           
+     
+    def create_shortcut(dest_path, target_path, working_dir_path = None, icon_path = None):    
+        shell = Dispatch('WScript.Shell')
         
-    if icon_path != None:
-        shortcut.IconLocation = icon_path
+        shortcut = shell.CreateShortCut(dest_path)
+        shortcut.Targetpath = target_path
+        
+        if working_dir_path != None:
+            shortcut.WorkingDirectory = working_dir_path
+            
+        # if making a shortcut to an exe, this img will override the exe's icon
+        # must be .ico    
+        if icon_path != None:
+            shortcut.IconLocation = icon_path
+        
+        shortcut.save()    
+        
     
-    
-# #     path = os.path.abspath(dest_path)
-#     target = target_path
-# #     wDir = working_dir_path
-#     icon = icon_path
-#     
-#     
-#     shortcut.Targetpath = target
-# #     shortcut.WorkingDirectory = wDir
-#     shortcut.IconLocation = icon
-    shortcut.save()            
+    if uap.ADD_SHORTCUT:
+        exe_path = '"{}//{}//{}"'.format(uap.DIST_DIR_PATH, TOP_LVL_FILE_BASENAME_NO_EXT, TOP_LVL_FILE_BASENAME_NO_EXT + '.exe')
+        print(exe_path)
+        create_shortcut(dest_path        = uap.SHORTCUT_DEST_PATH, 
+                        target_path      = exe_path, 
+                        working_dir_path = uap.SHORTCUT_WORKING_DIR_PATH, 
+                        icon_path        = uap.ICON__PATH)
 
 
 
@@ -86,25 +91,34 @@ def main():
     
     if not uap.DRY_RUN:
         
+        # delete previous app if exists
         if uap.APP_DIR__PATH != None:
             try:
                 fsu.delete_if_exists(uap.APP_DIR__PATH)
             except OSError:
                 fsu.delete_if_exists(uap.APP_DIR__PATH) 
-            
+          
+        # call the cmd to create the new app
         subprocess.call(cmd, shell = True)
+          
+        # delete __pycache__ created by making the new app
+        if uap.DELETE_PYCACHE:
+            fsu.delete_if_exists('__pycache__')
+              
+        # copy src files into dist to allow for relative paths to non-binary files (like images), also for record keeping
+        copy_files_to_dist_dir()      
+#         
+        # create shortcut
+        create_app_shortcut()
         
-    if uap.DELETE_PYCACHE:
-        fsu.delete_if_exists('__pycache__')
-        
-    copy_files_to_dist_dir()
+    
+    
 
-    i = input('\nPress Enter to continue')
+    input('\nPress Enter to continue')
     
 
 
 
 
 if __name__ == '__main__':
-#     main()       
-    create_shortcut(dest_path = 'sc.lnk', target_path = "C:\\projects\\version_control_scripts\\CE\\app\\dist\\main\\main.exe", working_dir_path = None, icon_path = uap.ICON__PATH)
+    main()       
