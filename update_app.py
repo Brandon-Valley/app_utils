@@ -1,5 +1,7 @@
 import os         
-import subprocess             
+import subprocess 
+import winshell
+from win32com.client import Dispatch            
 
 from usms.file_system_utils import file_system_utils as fsu
 
@@ -19,10 +21,7 @@ def build_cmd():
         cmd +='  --workpath="{}" '       .format(uap.BUILD_DIR_PATH)
             
     if uap.ICON__PATH != None:
-        icon_abs_path = os.path.dirname(os.path.abspath(__file__)) + '//' + uap.ICON__PATH
-#         cmd +=' --icon="{}" '           .format(icon_abs_path)               
         cmd +=' --icon="{}" '           .format(uap.ICON__PATH)   
-#         cmd +=' --one-dir '             
              
     return cmd
 
@@ -50,6 +49,22 @@ def copy_files_to_dist_dir():
             dist_dest_abs_path = '{}//{}//{}'.format(uap.DIST_DIR_PATH, top_lvl_file_basename_no_ext, rel_to_root_parent_dir_path)
              
             fsu.copy_objects_to_dest(abs_path, dist_dest_abs_path, copy_dir_content = False)
+            
+            
+            
+def create_shortcut(dest_path, target_path, working_dir_path = None, icon_path = None):
+
+    desktop = winshell.desktop()
+    path = os.path.abspath(dest_path)
+    target = r"P:\Media\Media Player Classic\mplayerc.exe"
+    wDir = r"P:\Media\Media Player Classic"
+    icon = r"P:\Media\Media Player Classic\mplayerc.exe"
+    shell = Dispatch('WScript.Shell')
+    shortcut = shell.CreateShortCut(path)
+    shortcut.Targetpath = target
+    shortcut.WorkingDirectory = wDir
+    shortcut.IconLocation = icon
+    shortcut.save()            
 
 
 
@@ -79,4 +94,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()       
+#     main()       
+    create_shortcut(dest_path = 'sc.lnk', target_path = "C:\\projects\\version_control_scripts\\CE\\app\\dist\\main", working_dir_path = None, icon_path = None)
