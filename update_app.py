@@ -55,15 +55,27 @@ def copy_files_to_dist_dir():
 def create_shortcut(dest_path, target_path, working_dir_path = None, icon_path = None):
 
     desktop = winshell.desktop()
-    path = os.path.abspath(dest_path)
-    target = r"P:\Media\Media Player Classic\mplayerc.exe"
-    wDir = r"P:\Media\Media Player Classic"
-    icon = r"P:\Media\Media Player Classic\mplayerc.exe"
     shell = Dispatch('WScript.Shell')
-    shortcut = shell.CreateShortCut(path)
-    shortcut.Targetpath = target
-    shortcut.WorkingDirectory = wDir
-    shortcut.IconLocation = icon
+    
+    shortcut = shell.CreateShortCut(dest_path)
+    shortcut.Targetpath = target_path
+    
+    if working_dir_path != None:
+        shortcut.WorkingDirectory = working_dir_path
+        
+    if icon_path != None:
+        shortcut.IconLocation = icon_path
+    
+    
+# #     path = os.path.abspath(dest_path)
+#     target = target_path
+# #     wDir = working_dir_path
+#     icon = icon_path
+#     
+#     
+#     shortcut.Targetpath = target
+# #     shortcut.WorkingDirectory = wDir
+#     shortcut.IconLocation = icon
     shortcut.save()            
 
 
@@ -95,4 +107,4 @@ def main():
 
 if __name__ == '__main__':
 #     main()       
-    create_shortcut(dest_path = 'sc.lnk', target_path = "C:\\projects\\version_control_scripts\\CE\\app\\dist\\main", working_dir_path = None, icon_path = None)
+    create_shortcut(dest_path = 'sc.lnk', target_path = "C:\\projects\\version_control_scripts\\CE\\app\\dist\\main\\main.exe", working_dir_path = None, icon_path = uap.ICON__PATH)
