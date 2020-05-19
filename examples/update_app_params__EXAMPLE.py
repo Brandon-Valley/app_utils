@@ -51,7 +51,7 @@ ADD_SHORTCUT = True
 
 # must end in .lnk but will not show
 # can contain spaces
-SHORTCUT_DEST_PATH = abs_path('..//Setup New Repository GUI.lnk')
+SHORTCUT_DEST_PATH = abs_path('..//Setup New Repository.lnk')
 
 SHORTCUT_WORKING_DIR_PATH = None
 
