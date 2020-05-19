@@ -32,6 +32,9 @@ def build_cmd():
 
 
 def copy_files_to_dist_dir():
+    
+    if uap.COPY_INTO_DIST__INCLUDE_PATHS_L != []:
+        print('\nCopying files to dist...')
                 
     # build init root_abs_path__rel_paths_to_copy_ld before trimming
     for root_abs_path in uap.COPY_INTO_DIST__INCLUDE_PATHS_L:        
@@ -43,7 +46,6 @@ def copy_files_to_dist_dir():
             trimmed_abs_path_l = fsu.path_l_remove(trimmed_abs_path_l, to_remove_str_or_l, removal_mode)
             
         # copy over each file / dir without contents to avoid including a trimmed path while not loosing empty dirs
-        print('\n Copying over files...')
         for abs_path in trimmed_abs_path_l:
             rel_to_root_path = fsu.get_rel_path_from_compare(abs_path, root_abs_path)
             
@@ -75,8 +77,9 @@ def create_app_shortcut():
         
     
     if uap.ADD_SHORTCUT:
+        print('\nCreating shortcut...')
         exe_path = '"{}//{}//{}"'.format(uap.DIST_DIR_PATH, TOP_LVL_FILE_BASENAME_NO_EXT, TOP_LVL_FILE_BASENAME_NO_EXT + '.exe')
-        print(exe_path)
+
         create_shortcut(dest_path        = uap.SHORTCUT_DEST_PATH, 
                         target_path      = exe_path, 
                         working_dir_path = uap.SHORTCUT_WORKING_DIR_PATH, 
@@ -90,21 +93,24 @@ def main():
     
     if not uap.DRY_RUN:
         
-        # delete previous app if exists
+        # delete previous app if exists        
         if uap.APP_DIR__PATH != None:
+            print('\nDeleting old app...')
             try:
                 fsu.delete_if_exists(uap.APP_DIR__PATH)
             except OSError:
                 fsu.delete_if_exists(uap.APP_DIR__PATH) 
           
         # call the cmd to create the new app
+        print('\nCreating new app...')        
         subprocess.call(cmd, shell = True)
           
         # delete __pycache__ created by making the new app
         if uap.DELETE_PYCACHE:
+            print('\nDeleting __pycache__...')    
             fsu.delete_if_exists('__pycache__')
               
-        # copy src files into dist to allow for relative paths to non-binary files (like images), also for record keeping
+        # copy src files into dist to allow for relative paths to non-binary files (like images), also for record keeping        
         copy_files_to_dist_dir()      
 
         # create shortcut
