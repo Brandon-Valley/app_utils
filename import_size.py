@@ -111,7 +111,7 @@ for i_str in i_str_l:
     os.chdir(PY_TEST_DIR_PATH)
     
     cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-    
+    subprocess.call(cmd, shell = True)
     
     
     os.chdir(og_script_dir_path)
