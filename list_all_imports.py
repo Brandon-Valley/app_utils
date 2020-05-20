@@ -13,8 +13,29 @@ def read(filePath):
         
  
 my_stuff_l = [ 'logger', '_utils', 'Main_Tab', '_tools', 'os.', 'sys.', "'",
-              'custom_exceptions',
-              ''] 
+                'Git_Commit',
+                'Tool_Tip',
+                'custom_exceptions',
+                'from . ',
+                'import setup_new_repo',
+                'common_vars',
+                'commit_log_format_strings       ',
+                'RGB_Display_Entry',
+                'custom_widgets',
+                'jsonplus__non_merged',
+                'print_function',
+                'absolute_import',
+
+                'from moneyed import USD',
+                'from flask import current_app',
+                'from djmoney.money import Money',
+                'import FunctionTimedOut',
+                'import Popen',
+                'from django.conf import settings',
+                'import CalledProcessError',
+                'from django_jsonplus.models import JSONPlusField',
+                'import join'                
+            ] 
  
 proj_path = "C:\\projects\\version_control_scripts\\CE\\setup_new_repo\\src"
  
@@ -45,7 +66,7 @@ for abs_file_path in all_files_abs_path_l:
                 
 #                 ss_str_l = []
                 for s_str in split_srt_l:
-                    ss_str = s_str.strip().replace('import', '').replace('sms.', '').replace('usms.', '')
+                    ss_str = s_str.strip().replace('sms.', '').replace('usms.', '')
                     
                     ss_str = ss_str.split(' as ')[0]
                     
@@ -63,6 +84,10 @@ for abs_file_path in all_files_abs_path_l:
 #                     ss_str_l.append(non_comment_ss_str)
 
                     if not any(m_str in non_comment_ss_str for m_str in my_stuff_l):
+                        
+                        if 'import' not in non_comment_ss_str:
+                            non_comment_ss_str = 'import ' + non_comment_ss_str
+                                                    
                         fi_d[py_basename].add(non_comment_ss_str)
                         i_str_set.add(non_comment_ss_str)
                     
