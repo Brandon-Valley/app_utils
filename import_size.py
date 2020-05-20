@@ -103,6 +103,32 @@ def write(lines, filePath, write_mode = 'overwrite'):
             writeFile.write('\n')
  
     writeFile.close() #to change file access modes 
+    
+    
+    
+def json_write(data, output_file_path, indent = 4):
+    fsu.make_file_if_not_exist(output_file_path)
+     
+    with open(output_file_path, 'w') as outfile:  
+        json.dump(data, outfile, indent = indent)
+        outfile.close()
+ 
+ 
+ 
+def json_read(json_file_path, return_if_file_not_found = "raise_exception"):
+    try:
+        with open(json_file_path, "r") as read_file:
+            data = json.load(read_file)           
+        read_file.close()
+    except FileNotFoundError as e:
+        if return_if_file_not_found != "raise_exception":
+            return return_if_file_not_found
+        else:
+            raise e
+        
+    return data    
+    
+    
 
 
 def size_d_to_sorted_str_l(size_d):
@@ -117,29 +143,38 @@ def size_d_to_sorted_str_l(size_d):
     return sorted_str_l
         
  
+def l_print(in_l):
+    for e in in_l:
+        print(e)
  
  
- 
-# local_size_d = {}
-#   
-# og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
-#   
-# for i_str in i_str_l:
-#     i_str_stripped = i_str.strip()
-#       
-#       
-#     fsu.delete_if_exists(PY_TEST_DIR_PATH)
-#     write([i_str], PY_TEST_PATH)
-#     os.chdir(PY_TEST_DIR_PATH)
-#       
-#     cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-#     subprocess.call(cmd, shell = True)
-#   
-#     app_size = get_size(PY_TEST_DIR_PATH)
-#     print(i_str_stripped, ': ', app_size)
-#     local_size_d[i_str_stripped] = app_size
-#       
-#     os.chdir(og_script_dir_path)
+local_size_d = {}
+   
+og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
+   
+for i_str in i_str_l:
+    i_str_stripped = i_str.strip()
+       
+       
+    fsu.delete_if_exists(PY_TEST_DIR_PATH)
+    write([i_str], PY_TEST_PATH)
+    os.chdir(PY_TEST_DIR_PATH)
+       
+    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+    subprocess.call(cmd, shell = True)
+   
+    app_size = get_size(PY_TEST_DIR_PATH)
+    print(i_str_stripped, ': ', app_size)
+    local_size_d[i_str_stripped] = app_size
+       
+    os.chdir(og_script_dir_path)
+    
+    
+local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
+print(local_sorted_size_str_l)
+print('local_sorted_size_str_l:')
+l_print(local_sorted_size_str_l)
+    
 #  
 # 
 # 
@@ -149,9 +184,9 @@ def size_d_to_sorted_str_l(size_d):
 # print(sorted(d, key=lambda i: int(d[i])))
 
 
-size_d = {'a': 50, 'b': 89, 'c': 110, '57482': 18, '57485': 82, '57484': 40}  
-
-print(size_d_to_sorted_str_l(size_d))
+# size_d = {'a': 50, 'b': 89, 'c': 110, '57482': 18, '57485': 82, '57484': 40}  
+# 
+# print(size_d_to_sorted_str_l(size_d))
 
 
 
