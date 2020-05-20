@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+import json
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from usms.file_system_utils import file_system_utils as fsu
@@ -151,7 +151,7 @@ def sorted_str_l_to_size_d(sorted_str_l):
     
     for size_str in sorted_str_l:
         kv = size_str.split(SORTED_STR_L_DELIM)
-        size_d[kv[0]] = kv[1]
+        size_d[kv[0]] = float(kv[1])
     return size_d
     
     
@@ -159,35 +159,45 @@ def sorted_str_l_to_size_d(sorted_str_l):
  
 def l_print(in_l):
     for e in in_l:
-        print(e)
+        print('  ', e)
         
         
-        
-# master_size_d = json_read(SORTED_STR_L_JSON_PATH, return_if_file_not_found = [])
+try:        
+    master_size_d = sorted_str_l_to_size_d(json_read(SORTED_STR_L_JSON_PATH, return_if_file_not_found = []))
+except json.decoder.JSONDecodeError:
+    master_size_d = {}
  
 local_size_d = {}
    
 og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
    
 for i_str in i_str_l:
-    i_str_stripped = i_str.strip()
+    i_str = i_str.strip()
+        
+    if i_str in master_size_d.keys():
+        print('\nSkipping import because size already known:  {} : {}'.format(i_str, master_size_d[i_str]))
+        
+    else:
+
+           
+           
+        fsu.delete_if_exists(PY_TEST_DIR_PATH)
+        write([i_str], PY_TEST_PATH)
+        os.chdir(PY_TEST_DIR_PATH)
+           
+        cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+        subprocess.call(cmd, shell = True)
        
-       
-    fsu.delete_if_exists(PY_TEST_DIR_PATH)
-    write([i_str], PY_TEST_PATH)
-    os.chdir(PY_TEST_DIR_PATH)
-       
-    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-    subprocess.call(cmd, shell = True)
-   
-    app_size = get_size(PY_TEST_DIR_PATH)
-    print(i_str_stripped, ': ', app_size)
-    local_size_d[i_str_stripped] = app_size
-       
-    os.chdir(og_script_dir_path)
-    
-    # so you stop committing apps
-    fsu.delete_if_exists(PY_TEST_DIR_PATH)
+        app_size = get_size(PY_TEST_DIR_PATH)
+        print(i_str, ': ', app_size)
+        
+        local_size_d[i_str] = app_size
+        master_size_d[i_str] = app_size
+           
+        os.chdir(og_script_dir_path)
+        
+        # so you stop committing apps
+        fsu.delete_if_exists(PY_TEST_DIR_PATH)
     
     
 local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
@@ -195,9 +205,15 @@ local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
 print('\nlocal_sorted_size_str_l:')
 l_print(local_sorted_size_str_l)
 
+print('-------------------------------------------------------')
+master_sorted_size_l = size_d_to_sorted_str_l(master_size_d)
+print('\nmaster_sorted_size_l')
+l_print(master_sorted_size_l)
 
-td = sorted_str_l_to_size_d(local_sorted_size_str_l)
-print(td)
+
+json_write(master_sorted_size_l, SORTED_STR_L_JSON_PATH)
+# td = sorted_str_l_to_size_d(local_sorted_size_str_l)
+# print(td)
 
 
     

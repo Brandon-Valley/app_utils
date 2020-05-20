@@ -1,0 +1,5 @@
+[
+    "import tkinter  :  22.48361",
+    "import ntpath  :  15.247816",
+    "from pynput.keyboard import Controller  :  15.899422"
+]
