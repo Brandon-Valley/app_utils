@@ -10,49 +10,49 @@ i_str_l =     [
         "import tkinter                        ",
         "import ntpath                         ",
         "from pynput.keyboard import Controller",
-#         "import simplejson                     ",
-#         "from operator import methodcaller     ",
-#         "import tkinter.ttk                    ",
-#         "from pynput.keyboard import Listener  ",
-#         "import _tkinter                       ",
-#         "from datetime import datetime         ",
-#         "from subprocess import PIPE           ",
-#         "from tkinter import filedialog        ",
-#         "import uuid                           ",
-#         "import ctypes                         ",
-#         "import json                           ",
-#         "import pyperclip                      ",
-#         "from dateutil.parser import parse     ",
-#         "import unittest                       ",
-#         "from tkinter import *                 ",
-#         "from setuptools import setup          ",
-#         "import six                            ",
-#         "import shutil                         ",
-#         "from os import listdir                ",
-#         "import traceback                      ",
-#         "import glob                           ",
-#         "import sys                            ",
-#         "from fractions import Fraction        ",
-#         "import subprocess                     ",
-#         "from tkinter.ttk import *             ",
-#         "from ctypes import windll             ",
-#         "from pynput.keyboard import Key       ",
-#         "import keyboard                       ",
-#         "import stat                           ",
-#         "from functools import wraps           ",
-#         "import time                           ",
-#         "import math                           ",
-#         "from pynput import keyboard           ",
-#         "import csv                            ",
-#         "import threading                      ",
-#         "from func_timeout import func_timeout ",
-#         "from decimal import Decimal           ",
-#         "import argparse                       ",
-#         "from operator import attrgetter       ",
-#         "import os                             ",
-#         "from collections import namedtuple    ",
-#         "import textwrap                       ",
-#         "import string                         "
+        "import simplejson                     ",
+        "from operator import methodcaller     ",
+        "import tkinter.ttk                    ",
+        "from pynput.keyboard import Listener  ",
+        "import _tkinter                       ",
+        "from datetime import datetime         ",
+        "from subprocess import PIPE           ",
+        "from tkinter import filedialog        ",
+        "import uuid                           ",
+        "import ctypes                         ",
+        "import json                           ",
+        "import pyperclip                      ",
+        "from dateutil.parser import parse     ",
+        "import unittest                       ",
+        "from tkinter import *                 ",
+        "from setuptools import setup          ",
+        "import six                            ",
+        "import shutil                         ",
+        "from os import listdir                ",
+        "import traceback                      ",
+        "import glob                           ",
+        "import sys                            ",
+        "from fractions import Fraction        ",
+        "import subprocess                     ",
+        "from tkinter.ttk import *             ",
+        "from ctypes import windll             ",
+        "from pynput.keyboard import Key       ",
+        "import keyboard                       ",
+        "import stat                           ",
+        "from functools import wraps           ",
+        "import time                           ",
+        "import math                           ",
+        "from pynput import keyboard           ",
+        "import csv                            ",
+        "import threading                      ",
+        "from func_timeout import func_timeout ",
+        "from decimal import Decimal           ",
+        "import argparse                       ",
+        "from operator import attrgetter       ",
+        "import os                             ",
+        "from collections import namedtuple    ",
+        "import textwrap                       ",
+        "import string                         "
     ]
 
 
@@ -145,6 +145,17 @@ def size_d_to_sorted_str_l(size_d):
         sorted_str_l.append(size_str)
     return sorted_str_l
 
+def size_d_to_adjusted_size_d(size_d):
+    sorted_key_l = reversed(sorted(size_d, key=lambda i: int(size_d[i])))
+    lowest_key = sorted_key_l[-1]
+    smallest_size = size_d[lowest_key]
+    
+    adjusted_size_d = {}
+    for k, v in size_d.items():
+        adjusted_size_d[k] = v - smallest_size
+        
+    return adjusted_size_d
+    
 
 def sorted_str_l_to_size_d(sorted_str_l):
     size_d = {}
