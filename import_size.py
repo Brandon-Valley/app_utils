@@ -53,8 +53,9 @@ i_str_l =     [
     ]
 
 
-
-TEST_PY_PATH = 'i_test.py'
+PY_TEST_DIR_PATH = os.path.abspath('i_test_dir')
+PY_TEST_FILE_NAME = 'i_test.py'
+PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
 
 
 
@@ -75,6 +76,7 @@ print(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test
 
 
 def write(lines, filePath, write_mode = 'overwrite'):
+    fsu.make_file_if_not_exist(filePath)
     
     # convert to str
     if type(lines) == list or type(lines) == tuple:
@@ -104,8 +106,9 @@ def write(lines, filePath, write_mode = 'overwrite'):
 
 
 for i_str in i_str_l:
-    fsu.delete_if_exists(TEST_PY_PATH)
-
+    fsu.delete_if_exists(PY_TEST_DIR_PATH)
+    write([i_str], PY_TEST_PATH)
+    os.chdir(PY_TEST_PATH)
 
 
 
