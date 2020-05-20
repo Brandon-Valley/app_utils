@@ -1,59 +1,14 @@
 import os
 import subprocess
 import json
+
+# import i_str_l.i_str_l
+from i_str_l import i_str_l
+
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from usms.file_system_utils import file_system_utils as fsu
 
-
-i_str_l =     [
-        "import tkinter                        ",
-        "import ntpath                         ",
-        "from pynput.keyboard import Controller",
-        "import simplejson                     ",
-        "from operator import methodcaller     ",
-        "import tkinter.ttk                    ",
-        "from pynput.keyboard import Listener  ",
-        "import _tkinter                       ",
-        "from datetime import datetime         ",
-        "from subprocess import PIPE           ",
-        "from tkinter import filedialog        ",
-        "import uuid                           ",
-        "import ctypes                         ",
-        "import json                           ",
-        "import pyperclip                      ",
-        "from dateutil.parser import parse     ",
-        "import unittest                       ",
-        "from tkinter import *                 ",
-        "from setuptools import setup          ",
-        "import six                            ",
-        "import shutil                         ",
-        "from os import listdir                ",
-        "import traceback                      ",
-        "import glob                           ",
-        "import sys                            ",
-        "from fractions import Fraction        ",
-        "import subprocess                     ",
-        "from tkinter.ttk import *             ",
-        "from ctypes import windll             ",
-        "from pynput.keyboard import Key       ",
-        "import keyboard                       ",
-        "import stat                           ",
-        "from functools import wraps           ",
-        "import time                           ",
-        "import math                           ",
-        "from pynput import keyboard           ",
-        "import csv                            ",
-        "import threading                      ",
-        "from func_timeout import func_timeout ",
-        "from decimal import Decimal           ",
-        "import argparse                       ",
-        "from operator import attrgetter       ",
-        "import os                             ",
-        "from collections import namedtuple    ",
-        "import textwrap                       ",
-        "import string                         "
-    ]
 
 
 PY_TEST_DIR_PATH = os.path.abspath('i_test_dir')
@@ -62,8 +17,9 @@ PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
 SORTED_STR_L_DELIM = '  :  '
 SORTED_STR_L_JSON_PATH = 'sorted_import_sizes.json'
 ADJ_SORTED_STR_L_JSON_PATH = 'adj_sorted_import_sizes.json'
+NUM_DECIMAL_DIGITS = 1
 
-
+OVERWRITE_MASTER_SIZES = False
 
 
 def get_size(start_path = '.'):
@@ -77,10 +33,8 @@ def get_size(start_path = '.'):
             if not os.path.islink(fp):
                 total_size += os.path.getsize(fp)
 
-    return bytes_to_megabytes(total_size)
+    return round(bytes_to_megabytes(total_size), NUM_DECIMAL_DIGITS)
 
-
-# print(bytes_to_megabytes(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test_1")))
 
 
 def write(lines, filePath, write_mode = 'overwrite'):
@@ -133,13 +87,12 @@ def json_read(json_file_path, return_if_file_not_found = "raise_exception"):
         
     return data    
     
-    
 
 
 def size_d_to_sorted_str_l(size_d):
     sorted_str_l = []
     
-    sorted_key_l = reversed(sorted(size_d, key=lambda i: int(size_d[i])))
+    sorted_key_l = reversed(sorted(size_d, key=lambda i: float(size_d[i])))
     
     for key in sorted_key_l:
         size_str = key + SORTED_STR_L_DELIM + str(size_d[key])
@@ -147,16 +100,17 @@ def size_d_to_sorted_str_l(size_d):
     return sorted_str_l
 
 def size_d_to_adjusted_size_d(size_d):
-    sorted_key_l = sorted(size_d, key=lambda i: int(size_d[i]))
+    sorted_key_l = sorted(size_d, key=lambda i: float(size_d[i]))
     lowest_key = sorted_key_l[0]
     smallest_size = size_d[lowest_key]
     
     adjusted_size_d = {}
     for k, v in size_d.items():
-        adjusted_size_d[k] = v - smallest_size
+        adjusted_size_d[k] = round(v - smallest_size, NUM_DECIMAL_DIGITS)
         
     return adjusted_size_d
     
+
 
 def sorted_str_l_to_size_d(sorted_str_l):
     size_d = {}
@@ -167,11 +121,12 @@ def sorted_str_l_to_size_d(sorted_str_l):
     return size_d
     
     
-    
  
 def l_print(in_l):
     for e in in_l:
         print('  ', e)
+        
+        
         
         
 try:        
@@ -186,13 +141,10 @@ og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
 for i_str in i_str_l:
     i_str = i_str.strip()
         
-    if i_str in master_size_d.keys():
+    if not OVERWRITE_MASTER_SIZES and i_str in master_size_d.keys():
         print('\nSkipping import because size already known:  {} : {}'.format(i_str, master_size_d[i_str]))
         
     else:
-
-           
-           
         fsu.delete_if_exists(PY_TEST_DIR_PATH)
         write([i_str], PY_TEST_PATH)
         os.chdir(PY_TEST_DIR_PATH)
