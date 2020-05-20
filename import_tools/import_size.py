@@ -189,11 +189,6 @@ local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
 print('\nlocal_sorted_size_str_l:')
 l_print(local_sorted_size_str_l)
 
-print('-------------------------------------------------------')
-adj_local_size_d = size_d_to_adjusted_size_d(local_size_d, master_size_d)
-adj_local_sorted_size_str_l = size_d_to_sorted_str_l(adj_local_size_d)
-print('\nadj_local_sorted_size_str_l:')
-l_print(local_sorted_size_str_l)
 
 
 json_write(master_sorted_size_l, SORTED_STR_L_JSON_PATH)
