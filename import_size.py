@@ -103,12 +103,16 @@ def write(lines, filePath, write_mode = 'overwrite'):
 
 
 
-
+og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
 
 for i_str in i_str_l:
     fsu.delete_if_exists(PY_TEST_DIR_PATH)
     write([i_str], PY_TEST_PATH)
     os.chdir(PY_TEST_DIR_PATH)
+    
+    
+    
+    os.chdir(og_script_dir_path)
 
 
 
