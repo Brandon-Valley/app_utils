@@ -1,6 +1,6 @@
 import os
 from usms.file_system_utils import file_system_utils as fsu
-
+import subprocess
 
 
 i_str_l =     [
@@ -58,6 +58,9 @@ PY_TEST_FILE_NAME = 'i_test.py'
 PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
 
 
+def bytes_to_megabytes(i):
+    return i / 1000000
+
 
 def get_size(start_path = '.'):
     total_size = 0
@@ -70,9 +73,8 @@ def get_size(start_path = '.'):
 
     return total_size
 
-print(get_size() / 1000, 'bytes')
 
-print(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test_1") / 1000000)
+print(bytes_to_megabytes(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test_1")))
 
 
 def write(lines, filePath, write_mode = 'overwrite'):
@@ -102,21 +104,24 @@ def write(lines, filePath, write_mode = 'overwrite'):
     writeFile.close() #to change file access modes 
 
 
-
-og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
-
-for i_str in i_str_l:
-    fsu.delete_if_exists(PY_TEST_DIR_PATH)
-    write([i_str], PY_TEST_PATH)
-    os.chdir(PY_TEST_DIR_PATH)
-    
-    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-    subprocess.call(cmd, shell = True)
-    
-    
-    os.chdir(og_script_dir_path)
-
-
+# 
+# og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
+# 
+# for i_str in i_str_l:
+#     
+#     
+#     fsu.delete_if_exists(PY_TEST_DIR_PATH)
+#     write([i_str], PY_TEST_PATH)
+#     os.chdir(PY_TEST_DIR_PATH)
+#     
+#     cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+#     subprocess.call(cmd, shell = True)
+# 
+#     app_size = 
+#     
+#     os.chdir(og_script_dir_path)
+# 
+# 
 
 
 
