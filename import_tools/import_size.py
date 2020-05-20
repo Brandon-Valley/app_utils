@@ -146,6 +146,9 @@ def size_d_to_sorted_str_l(size_d):
 def l_print(in_l):
     for e in in_l:
         print(e)
+        
+        
+        
  
  
 local_size_d = {}
@@ -169,10 +172,13 @@ for i_str in i_str_l:
        
     os.chdir(og_script_dir_path)
     
+    # so you stop committing apps
+    fsu.delete_if_exists(PY_TEST_DIR_PATH)
+    
     
 local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
-print(local_sorted_size_str_l)
-print('local_sorted_size_str_l:')
+# print(local_sorted_size_str_l)
+print('\nlocal_sorted_size_str_l:')
 l_print(local_sorted_size_str_l)
     
 #  
