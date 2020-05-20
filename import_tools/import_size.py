@@ -2,7 +2,6 @@ import os
 import subprocess
 import json
 
-# import i_str_l.i_str_l
 from i_str_l import i_str_l
 
 import os, sys
@@ -99,11 +98,18 @@ def size_d_to_sorted_str_l(size_d):
         sorted_str_l.append(size_str)
     return sorted_str_l
 
-def size_d_to_adjusted_size_d(size_d):
-    sorted_key_l = sorted(size_d, key=lambda i: float(size_d[i]))
-    lowest_key = sorted_key_l[0]
-    smallest_size = size_d[lowest_key]
-    
+
+
+def size_d_to_adjusted_size_d(size_d, master_size_d = None):
+    if master_size_d == None:
+        sorted_key_l = sorted(size_d, key=lambda i: float(size_d[i]))
+        lowest_key = sorted_key_l[0]
+        smallest_size = size_d[lowest_key]
+    else:
+        sorted_key_l = sorted(master_size_d, key=lambda i: float(master_size_d[i]))
+        lowest_key = sorted_key_l[0]
+        smallest_size = master_size_d[lowest_key]
+        
     adjusted_size_d = {}
     for k, v in size_d.items():
         adjusted_size_d[k] = round(v - smallest_size, NUM_DECIMAL_DIGITS)
@@ -164,11 +170,8 @@ for i_str in i_str_l:
         fsu.delete_if_exists(PY_TEST_DIR_PATH)
     
     
-local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
-# print(local_sorted_size_str_l)
-print('\nlocal_sorted_size_str_l:')
-l_print(local_sorted_size_str_l)
 
+# result print
 print('-------------------------------------------------------')
 master_sorted_size_l = size_d_to_sorted_str_l(master_size_d)
 print('\nmaster_sorted_size_l')
@@ -181,9 +184,22 @@ adj_master_size_str_l = size_d_to_sorted_str_l(adj_master_size_d)
 print('\nadj_master_size_str_l:')
 l_print(adj_master_size_str_l)
 
+print('-------------------------------------------------------')
+local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
+print('\nlocal_sorted_size_str_l:')
+l_print(local_sorted_size_str_l)
+
+print('-------------------------------------------------------')
+adj_local_size_d = size_d_to_adjusted_size_d(local_size_d, master_size_d)
+adj_local_sorted_size_str_l = size_d_to_sorted_str_l(adj_local_size_d)
+print('\nadj_local_sorted_size_str_l:')
+l_print(local_sorted_size_str_l)
+
 
 json_write(master_sorted_size_l, SORTED_STR_L_JSON_PATH)
 json_write(adj_master_size_str_l, ADJ_SORTED_STR_L_JSON_PATH)
+
+
 # td = sorted_str_l_to_size_d(local_sorted_size_str_l)
 # print(td)
 

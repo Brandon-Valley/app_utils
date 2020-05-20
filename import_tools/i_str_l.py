@@ -47,5 +47,8 @@ i_str_l =     [
         "import string                         ",
         "import datetime                       ",
         "import pyperclip.paste                ",
-        "import pyperclip.copy                 "
+        "import pyperclip.copy                 ",
+        "import tkinter.Button                 ",
+        "import tkinter.Entry                  ",
+        "import tkinter.Label                  "
     ]
