@@ -108,7 +108,7 @@ def write(lines, filePath, write_mode = 'overwrite'):
 for i_str in i_str_l:
     fsu.delete_if_exists(PY_TEST_DIR_PATH)
     write([i_str], PY_TEST_PATH)
-    os.chdir(PY_TEST_PATH)
+    os.chdir(PY_TEST_DIR_PATH)
 
 
 
