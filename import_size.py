@@ -7,56 +7,56 @@ i_str_l =     [
         "import tkinter                        ",
         "import ntpath                         ",
         "from pynput.keyboard import Controller",
-        "import simplejson                     ",
-        "from operator import methodcaller     ",
-        "import tkinter.ttk                    ",
-        "from pynput.keyboard import Listener  ",
-        "import _tkinter                       ",
-        "from datetime import datetime         ",
-        "from subprocess import PIPE           ",
-        "from tkinter import filedialog        ",
-        "import uuid                           ",
-        "import ctypes                         ",
-        "import json                           ",
-        "import pyperclip                      ",
-        "from dateutil.parser import parse     ",
-        "import unittest                       ",
-        "from tkinter import *                 ",
-        "from setuptools import setup          ",
-        "import six                            ",
-        "import shutil                         ",
-        "from os import listdir                ",
-        "import traceback                      ",
-        "import glob                           ",
-        "import sys                            ",
-        "from fractions import Fraction        ",
-        "import subprocess                     ",
-        "from tkinter.ttk import *             ",
-        "from ctypes import windll             ",
-        "from pynput.keyboard import Key       ",
-        "import keyboard                       ",
-        "import stat                           ",
-        "from functools import wraps           ",
-        "import time                           ",
-        "import math                           ",
-        "from pynput import keyboard           ",
-        "import csv                            ",
-        "import threading                      ",
-        "from func_timeout import func_timeout ",
-        "from decimal import Decimal           ",
-        "import argparse                       ",
-        "from operator import attrgetter       ",
-        "import os                             ",
-        "from collections import namedtuple    ",
-        "import textwrap                       ",
-        "import string                         "
+#         "import simplejson                     ",
+#         "from operator import methodcaller     ",
+#         "import tkinter.ttk                    ",
+#         "from pynput.keyboard import Listener  ",
+#         "import _tkinter                       ",
+#         "from datetime import datetime         ",
+#         "from subprocess import PIPE           ",
+#         "from tkinter import filedialog        ",
+#         "import uuid                           ",
+#         "import ctypes                         ",
+#         "import json                           ",
+#         "import pyperclip                      ",
+#         "from dateutil.parser import parse     ",
+#         "import unittest                       ",
+#         "from tkinter import *                 ",
+#         "from setuptools import setup          ",
+#         "import six                            ",
+#         "import shutil                         ",
+#         "from os import listdir                ",
+#         "import traceback                      ",
+#         "import glob                           ",
+#         "import sys                            ",
+#         "from fractions import Fraction        ",
+#         "import subprocess                     ",
+#         "from tkinter.ttk import *             ",
+#         "from ctypes import windll             ",
+#         "from pynput.keyboard import Key       ",
+#         "import keyboard                       ",
+#         "import stat                           ",
+#         "from functools import wraps           ",
+#         "import time                           ",
+#         "import math                           ",
+#         "from pynput import keyboard           ",
+#         "import csv                            ",
+#         "import threading                      ",
+#         "from func_timeout import func_timeout ",
+#         "from decimal import Decimal           ",
+#         "import argparse                       ",
+#         "from operator import attrgetter       ",
+#         "import os                             ",
+#         "from collections import namedtuple    ",
+#         "import textwrap                       ",
+#         "import string                         "
     ]
 
 
 PY_TEST_DIR_PATH = os.path.abspath('i_test_dir')
 PY_TEST_FILE_NAME = 'i_test.py'
 PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
-
+SORTED_STR_L_DELIM = '  :  '
 
 
 
@@ -105,37 +105,53 @@ def write(lines, filePath, write_mode = 'overwrite'):
     writeFile.close() #to change file access modes 
 
 
+def size_d_to_sorted_str_l(size_d):
+    sorted_str_l = []
+    
+    sorted_key_l = reversed(sorted(size_d, key=lambda i: int(size_d[i])))
+    
+    for key in sorted_key_l:
+        size_str = key + SORTED_STR_L_DELIM + str(size_d[key])
+#         print(size_str)
+        sorted_str_l.append(size_str)
+    return sorted_str_l
+        
  
  
-local_size_d = {}
- 
-og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
- 
-for i_str in i_str_l:
-    i_str_stripped = i_str.strip()
-     
-     
-    fsu.delete_if_exists(PY_TEST_DIR_PATH)
-    write([i_str], PY_TEST_PATH)
-    os.chdir(PY_TEST_DIR_PATH)
-     
-    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-    subprocess.call(cmd, shell = True)
- 
-    app_size = get_size(PY_TEST_DIR_PATH)
-    print(i_str_stripped, ': ', app_size)
-    local_size_d[i_str_stripped] = app_size
-     
-    os.chdir(og_script_dir_path)
  
  
-
-
-
-
-
+# local_size_d = {}
+#   
+# og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
+#   
+# for i_str in i_str_l:
+#     i_str_stripped = i_str.strip()
+#       
+#       
+#     fsu.delete_if_exists(PY_TEST_DIR_PATH)
+#     write([i_str], PY_TEST_PATH)
+#     os.chdir(PY_TEST_DIR_PATH)
+#       
+#     cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+#     subprocess.call(cmd, shell = True)
+#   
+#     app_size = get_size(PY_TEST_DIR_PATH)
+#     print(i_str_stripped, ': ', app_size)
+#     local_size_d[i_str_stripped] = app_size
+#       
+#     os.chdir(og_script_dir_path)
+#  
+# 
+# 
+# local_sorted_dl
+#  
+#  
 # print(sorted(d, key=lambda i: int(d[i])))
 
+
+size_d = {'a': 50, 'b': 89, 'c': 110, '57482': 18, '57485': 82, '57484': 40}  
+
+print(size_d_to_sorted_str_l(size_d))
 
 
 
