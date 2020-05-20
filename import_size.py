@@ -110,6 +110,8 @@ for i_str in i_str_l:
     write([i_str], PY_TEST_PATH)
     os.chdir(PY_TEST_DIR_PATH)
     
+    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+    
     
     
     os.chdir(og_script_dir_path)
