@@ -1,6 +1,9 @@
 import os
-from usms.file_system_utils import file_system_utils as fsu
 import subprocess
+
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from usms.file_system_utils import file_system_utils as fsu
 
 
 i_str_l =     [
@@ -57,6 +60,7 @@ PY_TEST_DIR_PATH = os.path.abspath('i_test_dir')
 PY_TEST_FILE_NAME = 'i_test.py'
 PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
 SORTED_STR_L_DELIM = '  :  '
+SORTED_STR_L_JSON_PATH = 'sorted_import_sizes.json'
 
 
 
@@ -138,10 +142,20 @@ def size_d_to_sorted_str_l(size_d):
     
     for key in sorted_key_l:
         size_str = key + SORTED_STR_L_DELIM + str(size_d[key])
-#         print(size_str)
         sorted_str_l.append(size_str)
     return sorted_str_l
-        
+
+
+def sorted_str_l_to_size_d(sorted_str_l):
+    size_d = {}
+    
+    for size_str in sorted_str_l:
+        kv = size_str.split(SORTED_STR_L_DELIM)
+        size_d[kv[0]] = kv[1]
+    return size_d
+    
+    
+    
  
 def l_print(in_l):
     for e in in_l:
@@ -149,7 +163,7 @@ def l_print(in_l):
         
         
         
- 
+# master_size_d = json_read(SORTED_STR_L_JSON_PATH, return_if_file_not_found = [])
  
 local_size_d = {}
    
@@ -180,6 +194,12 @@ local_sorted_size_str_l = size_d_to_sorted_str_l(local_size_d)
 # print(local_sorted_size_str_l)
 print('\nlocal_sorted_size_str_l:')
 l_print(local_sorted_size_str_l)
+
+
+td = sorted_str_l_to_size_d(local_sorted_size_str_l)
+print(td)
+
+
     
 #  
 # 
