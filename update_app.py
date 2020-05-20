@@ -1,4 +1,4 @@
-# import os         
+import os         
 import subprocess 
 # import winshell
 from win32com.client import Dispatch            
@@ -10,7 +10,7 @@ import update_app_params as uap
 
 
 TOP_LVL_FILE_BASENAME_NO_EXT = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PATH, include_ext = False)
-
+NUM_DECIMAL_DIGITS = 3
 
 
 def build_cmd():
@@ -87,6 +87,23 @@ def create_app_shortcut():
 
 
 
+def get_size(start_path = '.'):
+    def bytes_to_megabytes(i):
+        return i / 1000000
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            # skip if it is symbolic link
+            if not os.path.islink(fp):
+                total_size += os.path.getsize(fp)
+
+    return round(bytes_to_megabytes(total_size), NUM_DECIMAL_DIGITS)
+
+
+
+
+
 def main(): 
     cmd = build_cmd()
     print(cmd)
@@ -115,6 +132,8 @@ def main():
 
         # create shortcut
         create_app_shortcut()
+        
+        print('\nFinal App Size: ', get_size(uap.APP_DIR__PATH), 'MB')
 
     input('\nPress Enter to continue')
     
