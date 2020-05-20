@@ -25,7 +25,7 @@ def build_cmd():
         cmd +='  --workpath="{}" '       .format(uap.BUILD_DIR_PATH)
             
     if uap.ICON__PATH != None:
-        cmd +=' --icon="{}" '           .format(uap.ICON__PATH)   
+        cmd +=' --icon="{}" '            .format(uap.ICON__PATH)   
              
     return cmd
 
