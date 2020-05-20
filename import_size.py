@@ -58,11 +58,12 @@ PY_TEST_FILE_NAME = 'i_test.py'
 PY_TEST_PATH = PY_TEST_DIR_PATH + '//' + PY_TEST_FILE_NAME
 
 
-def bytes_to_megabytes(i):
-    return i / 1000000
+
 
 
 def get_size(start_path = '.'):
+    def bytes_to_megabytes(i):
+        return i / 1000000
     total_size = 0
     for dirpath, dirnames, filenames in os.walk(start_path):
         for f in filenames:
@@ -71,10 +72,10 @@ def get_size(start_path = '.'):
             if not os.path.islink(fp):
                 total_size += os.path.getsize(fp)
 
-    return total_size
+    return bytes_to_megabytes(total_size)
 
 
-print(bytes_to_megabytes(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test_1")))
+# print(bytes_to_megabytes(get_size("C:\\Users\\mt204e\\Documents\\test\\pyinstaller_tests\\size_test_1")))
 
 
 def write(lines, filePath, write_mode = 'overwrite'):
@@ -104,30 +105,36 @@ def write(lines, filePath, write_mode = 'overwrite'):
     writeFile.close() #to change file access modes 
 
 
-# 
-# og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
-# 
-# for i_str in i_str_l:
-#     
-#     
-#     fsu.delete_if_exists(PY_TEST_DIR_PATH)
-#     write([i_str], PY_TEST_PATH)
-#     os.chdir(PY_TEST_DIR_PATH)
-#     
-#     cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
-#     subprocess.call(cmd, shell = True)
-# 
-#     app_size = 
-#     
-#     os.chdir(og_script_dir_path)
-# 
-# 
+ 
+ 
+local_size_d = {}
+ 
+og_script_dir_path = os.path.abspath(os.path.dirname(__file__))
+ 
+for i_str in i_str_l:
+    i_str_stripped = i_str.strip()
+     
+     
+    fsu.delete_if_exists(PY_TEST_DIR_PATH)
+    write([i_str], PY_TEST_PATH)
+    os.chdir(PY_TEST_DIR_PATH)
+     
+    cmd = 'pyinstaller ' + PY_TEST_FILE_NAME
+    subprocess.call(cmd, shell = True)
+ 
+    app_size = get_size(PY_TEST_DIR_PATH)
+    print(i_str_stripped, ': ', app_size)
+    local_size_d[i_str_stripped] = app_size
+     
+    os.chdir(og_script_dir_path)
+ 
+ 
 
 
 
 
 
-
+# print(sorted(d, key=lambda i: int(d[i])))
 
 
 
