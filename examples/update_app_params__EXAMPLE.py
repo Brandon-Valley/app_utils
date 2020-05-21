@@ -12,7 +12,8 @@ def abs_path(in_path):
 #################################################
 
 # path to top level file relative to this file
-TOP_LEVEL_FILE__PATH = abs_path('..//..//src//main.py') 
+# if this file is not a .pyw, it will bring up a terminal when run
+TOP_LEVEL_FILE__PATH = abs_path('..//..//src//main.pyw') 
 
 # None for default python icon, must be .ico
 ICON__PATH           = abs_path('..//imgs//icon.ico')             
@@ -22,7 +23,8 @@ APP_DIR__PATH        = abs_path('..//..//app')
              
 # can be paths to dirs or individual files
 # leave list empty to not copy anything extra into the dist dir
-COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..//..')] 
+COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..//..//src'),
+                                   abs_path('..//..//app_update')] 
 
 
 # to exclude from any dir in COPY_INTO_DIST__INCLUDE_PATHS_L
