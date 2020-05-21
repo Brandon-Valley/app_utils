@@ -12,10 +12,10 @@ def abs_path(in_path):
 #################################################
 
 # path to top level file relative to this file
-TOP_LEVEL_FILE__PATH = abs_path('..//..//main.py') 
+TOP_LEVEL_FILE__PATH = abs_path('..//..//src//main.py') 
 
 # None for default python icon, must be .ico
-ICON__PATH           = abs_path('..//..//imgs//icon.ico')             
+ICON__PATH           = abs_path('..//imgs//icon.ico')             
 
 # None for pwd      
 APP_DIR__PATH        = abs_path('..//..//app')                  
