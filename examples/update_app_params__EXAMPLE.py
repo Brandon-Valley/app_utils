@@ -12,17 +12,17 @@ def abs_path(in_path):
 #################################################
 
 # path to top level file relative to this file
-TOP_LEVEL_FILE__PATH = abs_path('..//main.py') 
+TOP_LEVEL_FILE__PATH = abs_path('..//..//main.py') 
 
 # None for default python icon, must be .ico
-ICON__PATH           = abs_path('..//imgs//icon.ico')             
+ICON__PATH           = abs_path('..//..//imgs//icon.ico')             
 
 # None for pwd      
-APP_DIR__PATH        = abs_path('..//app')                  
+APP_DIR__PATH        = abs_path('..//..//app')                  
              
 # can be paths to dirs or individual files
 # leave list empty to not copy anything extra into the dist dir
-COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..')] 
+COPY_INTO_DIST__INCLUDE_PATHS_L = [abs_path('..//..')] 
 
 
 # to exclude from any dir in COPY_INTO_DIST__INCLUDE_PATHS_L
@@ -51,7 +51,7 @@ ADD_SHORTCUT = True
 
 # must end in .lnk but will not show
 # can contain spaces
-SHORTCUT_DEST_PATH = abs_path('..//Setup New Repository.lnk')
+SHORTCUT_DEST_PATH = abs_path('..//..//Sourcetree_Add_Remote_Name_To_Clone_Path.lnk')
 
 SHORTCUT_WORKING_DIR_PATH = None
 
