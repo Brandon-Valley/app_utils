@@ -5,6 +5,9 @@ import os
 def abs_path(in_path):
     return os.path.abspath(in_path)
 
+# if true, print error to console instead of raising exception
+#    this is preferable in production because a raised exception will close the terminal if the script was run from a double click
+IS_PRODUCTION = True
 
 
 #################################################

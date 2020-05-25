@@ -12,6 +12,7 @@ TOP_LVL_FILE_BASENAME_NO_EXT = fsu.get_basename_from_path(uap.TOP_LEVEL_FILE__PA
 NUM_DECIMAL_DIGITS = 3
 
 
+
 def build_cmd():
     cmd = 'pyinstaller '
     cmd +='  {} '                        .format(uap.TOP_LEVEL_FILE__PATH)
@@ -103,7 +104,7 @@ def get_size(start_path = '.'):
 
 
 
-def main(): 
+def update_app(): 
     cmd = build_cmd()
     print(cmd)
     
@@ -134,9 +135,26 @@ def main():
         
         print('\nFinal App Size: ', get_size(uap.APP_DIR__PATH), 'MB')
 
-    input('\nPress Enter to continue')
-    
 
+
+        
+    
+def main():
+    try:
+        sfdafa
+        update_app()
+        sdfadf
+    except:
+        if uap.IS_PRODUCTION:
+            import traceback
+            error_info = traceback.format_exc()
+            
+            print('ERROR: App probably not created:\n')
+            print(error_info)
+        else:
+            raise
+    
+    input('\nPress Enter to continue')
 
 
 
