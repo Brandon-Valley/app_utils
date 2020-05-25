@@ -141,9 +141,7 @@ def update_app():
     
 def main():
     try:
-        sfdafa
         update_app()
-        sdfadf
     except:
         if uap.IS_PRODUCTION:
             import traceback
